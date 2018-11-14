@@ -1,4 +1,4 @@
-// total issues are 6. 
+// total issues are 7. 
 //1. Hardcoded Address, 2. Locked Money, 3. Overpowered User, 4. Compiler version, 
 //5. Redundant fallback functions, 6. Upgrade code to solidity 0.5.0., 7. Implicit Visibility Level.
 //All six issues solved by changing function calling, addressing, and removing redundant fallback methods.     
