@@ -1,0 +1,30 @@
+Steps to execute JSON RPC in Postman: 
+
+Step-1: Start mining in one PowerShell.
+
+Step-2: Open another PowerShell and execute following commands: 
+		>geth attach ipc:\\.\pipe\geth.ipc
+		>admin.startRPC("127.0.0.1",8545,"*","web3,db,net,eth")
+		
+Step-3: While mining is in process, do execute commands in Postman.
+
+Step-4: Follow given instructions before executing anything in Postman,
+		
+		- Select Method from dropdown 'POST'
+		- Enter URL 'http://127.0.0.1:8545'
+		- Select 'body'
+		- Select 'raw'
+		- JSON (Application/json) from dropdown
+		
+Step-5:	Execute different JSON RPC Commands:
+		Ex: 
+			{"jsonrpc":"2.0","method":"web_clientVersion","params":[],"id":67}
+			
+Step-6: Hit the 'send' button and we'll get:
+
+		{
+			"jsonrpc":"2.0",
+			"id":67,
+			"result":"Geth/v1.8.18-stable-58632d44/windows-......./..."
+		}
+		

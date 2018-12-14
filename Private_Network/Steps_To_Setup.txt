@@ -1,0 +1,91 @@
+To setup private network foe ethereum, following installation is mandatory:
+
+Geth(Go-Ethereum): CLI, used to mine, generate ether, transfer funds, create accounts on your peivate network.
+
+To download it: https://ethereum.github.io./go-ethereum/downloads 
+
+For geth use PowerShell, because some sources says that all commands are not well executable with Command Prompt.
+
+Ganache : It provides GUI for blockchain & node representation, just like and emulator. (optional) 
+Git: Version and control system(optional)
+
+Step-1: After installing and setting up geth, create directory or we can say private directory where all the files and blocks will be stored. 
+
+Step-2: Using following command we can create directory,
+		mkdir directory_name
+		inside that directory,
+		cd directory_name use 'puppeth'
+
+Step-3: Specify network name, later on we can set this via --network = new_network_name 
+
+Step-4: It'll display menu with 4 choices, select 2. Configure New Genesis.
+		Here Genesis is a genesis block, a very first block of our blockchain.
+		
+Step-5: Select consensus engine, Ethash (Proof-of-work) and leave prefunded account with just enter.
+
+Step-6: Specify ChainId/NetworkId.
+		Reserved/used id for public network are:
+		1. Main Network 
+		2. Morden Testnet (Obselete)
+		3. Ropsten Testnet
+		4. Rinkeby Testnet
+		42. Kovan Testnet
+
+Step-7: Export created genesis in .json file. Select 2. Manage existing genesis and again 2. Export genesis configurations.
+
+Step-8: ctrl+c to quit puppeth, using 
+		
+		geth --datadir . init ./YourGenesisJsonFileName.json
+		
+		It'll shows detail about time stamp, nodes, caches, hash, etc.
+	
+Step-9: By using 'ls' , list of files will display.
+		
+		- geth (stores all data for the chain)
+		- keystore (stores all our accounts)
+
+Step-10: Create account, which will act as buyer/seller/mining rewards	
+
+		geth --datadir . account new
+		
+		It'll ask for password, each account have its own private key.
+		Passphrase:
+		Repassphrase:
+		
+Step-11: Create startnode.cmd file and password.sec file using editor. Startnode have different commands to mine nodes from given account index, and password.sec file will used to unlock requested acount using password.
+		
+		notepad ./startnode.cmd
+		
+		geth --networkid your_networkid --mine --minerthreads noOfThreads --datadir ".(currentdir)" --nodiscover --rpc --rpcport "8545" --port "30303" --rpccorsdomain "*" --nat "any" --rpcapi eth,web3,personal,net --unlock 0 --password .\password.sec 
+			
+		now store your pasword in password.sec file.
+
+Step-12: Run/open source node file with	./startnode.cmd, it'll automatically  execute mining process.
+		
+		epoch: is a period of a 30k blocks.
+		
+Step-13: Open another PowerShell, use given command:
+		
+		geth attach ipc:\\.\pipe\geth.ipc
+	
+Step-14: Commands to execute: 
+	
+		>eth.accounts: will display all accounts of ethereum.
+		
+		>eth.coinbase: base address, i.e 0
+		
+		>eth.getBalance(eth.coinbase): gives balance of parameterized account
+		
+		>eth.getBalance(eth.accounts[1])
+		0
+		
+Step-15 To start mining, 
+		>miner.start()
+		
+		To stop mining,
+		>miner.stop()
+		
+		to get hashrate of mining,
+		>miner.getHashrate 
+		
+		
