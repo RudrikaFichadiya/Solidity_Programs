@@ -1,4 +1,4 @@
-To setup private network foe ethereum, following installation is mandatory:
+To setup private network for ethereum, following installation is mandatory:
 
 Geth(Go-Ethereum): CLI, used to mine, generate ether, transfer funds, create accounts on your peivate network.
 
