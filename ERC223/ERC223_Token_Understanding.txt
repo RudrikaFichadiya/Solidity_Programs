@@ -1,0 +1,42 @@
+ERC223 vs ERC20:
+- if we send 100 ETH to a contract that is not intended to work with Ether, then it will reject a transaction and nothing will happen.
+- if we send 100 ERC20 tokens to a contract that is not intended to work with ERC20 tokens, it will not reject a transactrion because it can't recognise an incoming transaction.
+  As the result our tokens will get stuck at the contracts balance.
+- Lack of transfer handling posibilities.
+- Loss of tokens.
+- Token-transactions should match Ethereum ideology and uniformity. When a user wants to transfer tokens, he should always call transfer.
+  it doesn't matter if the user dipositing to a contract or sending to an externally owned account.
+
+Methods of ERC223:
+
+-> function totalSupply() constant returns (uint256 totalSupply)
+-> function name() constant returns (string _name)
+-> function symbol() constant returns (bytes32 _symbol)
+-> function decimals() constant returns (uint8 _decimals)
+-> function balanceOf(address _owner) constant returns (uint256 balance)
+-> function transfer(address _to, uint _value) returns (bool)
+  - Needed due to backward compatibility reasons ERC20 transfer function doesn't have bytes parameter, this function must transfer tokens and 
+    invoke the the function tokenFallback(address, uint256, bytes) in _to, if _to is a contract.
+  - If tokenFallback function is not implemented in _to (receiver contract), then the transaction must fail and the transfer of tokens
+    should not occur.
+-> function transfer(address _to, uint _value, bytes _data) returns (bool)
+  - Function that is always called when someone wants to transfer tokens. It must transfer tokens and invoke the function 
+    tokenFallback(address,uint256,bytes) in _to, if _to is a contract. If tokenFallback function is not implemented in _to 
+    (receiver contract), then the transaction must fail and the transfer of tokens should not occur.
+  - If _to is externally owned address, then the transaction must be sent without trying to execute tokenFallback in _to.
+  - _data can be attached to this token transaction and it will stay in blockchain forever (require more GAS), _data can be empty.
+
+Events of ERC223:
+
+NOTE: -The indexed parameters for logged events will allow you to search for these events using the indexed parameters as filters.
+      -The indexed keyword is only relevant to logged events.
+	  
+-> event Transfer(address indexed _from, address indexed _to, uint256 indexed _value, bytes _data)
+   - calls whenever tokens will be transfers from contract to contract.
+
+Contract to work with Tokens:
+
+-> function tokenFallback(address _from, uint value, bytes _data) 
+NOTE: This function must be named tokenFallback and take parameters address, uint256, bytes to match the function signature,
+      0xc0ee0b8a.
+	  
