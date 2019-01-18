@@ -1,0 +1,35 @@
+- ERC827 same as ERC223, in Addition it allows flexible to send data along with recepient address _to and _value.
+- ERC827 is an extension of ERC20.
+- 3 new functions in ERC827 token standard contract:
+	1. approveAndCall()
+	2. transferAndCall()
+	3. transferFromAndCall()
+
+Function in detail:
+ 
+1. approveAndCall() - Probably the one that you will need, maybe the only one since it allows the receiver contract to use authenticated/approved balance. The best practice is to check the allowance of the sender and then do your stuff using the transferFromAndCall method.
+
+ function approveAndCall(address _spender, uint256 _value, bytes _data) public payable returns (bool success) {
+    require(_spender != address(this));
+    require(super.approve(_spender, _value));
+    require(_spender.call(_data));
+    return true;
+  }
+  
+2. transferAndCall() -  There is no way to check that the balance that will be transfered is the correct one, this function is useful when a function dont need to check any transfer of value.
+
+ function transferAndCall(address _to, uint256 _value, bytes _data) public payable returns (bool success) {
+    require(_to != address(this));
+    require(super.transfer(_to, _value));
+    require(_to.call(_data));
+    return true;
+  }
+  
+3. transferFromAndCall() - Same as transferAndCall, only useful when there is no need to check the transfered amount of tokens and want to spend approved balance.
+
+ function transferFromAndCall(address _from, address _to, uint256 _value, bytes _data)public payable returns (bool success) {
+    require(_to != address(this));
+    require(super.transferFrom(_from, _to, _value));
+    require(_to.call(_data));
+    return true;
+  }
